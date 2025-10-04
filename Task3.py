@@ -225,7 +225,10 @@ def block_from_A(A: str) -> bytes:
 def block_from_B(B: int) -> bytes:
     # 8-byte big-endian
     return B.to_bytes(8, 'big', signed=False)
-
+    
+def bytes_to_bin(b: bytes) -> str:
+    return ' '.join(format(byte, '08b') for byte in b)
+    
 A = "Tamirlan Ramazanov"
 B = 20250704
 
@@ -237,9 +240,11 @@ key_block = block_from_B(B)
 ct0 = des_encrypt_block(plaintext_block, key_block)
 
 print("Plaintext (hex):", plaintext_block.hex())
+print("Plaintext (bin):", bytes_to_bin(plaintext_block))
 print("Key       (hex):", key_block.hex())
-print("CT base   (hex):", ct0.hex())
-
+print("Key       (bin):", bytes_to_bin(key_block))
+print("CipherText(hex):", ct0.hex())
+print("CipherText(bin):", bytes_to_bin(ct0))
 
 random.seed(42)  
 bit_pt = random.randrange(64) 
@@ -252,8 +257,8 @@ print("\n[Plaintext bit flip]")
 print(f"Flipped bit index in PT: {bit_pt}")
 print("PT flipped (hex):", pt_flipped.hex())
 print("PT flipped (bin):", bstr(pt_flipped))
-print("CT after PT flip (hex):", ct_ptflip.hex())
-print("CT after PT flip (bin):", bstr(ct_ptflip))
+print("CipherText after PT flip (hex):", ct_ptflip.hex())
+print("CipherText after PT flip (bin):", bstr(ct_ptflip))
 print("Changed bits in ciphertext:", hd_pt)
 
 
@@ -267,8 +272,6 @@ print("\n[Key bit flip]")
 print(f"Flipped bit index in KEY: {bit_k}")
 print("KEY flipped (hex):", key_flipped.hex())
 print("KEY flipped (bin):", bstr(key_flipped))
-print("CT after KEY flip (hex):", ct_kflip.hex())
-print("CT after KEY flip (bin):", bstr(ct_kflip))
+print("CipherText after KEY flip (hex):", ct_kflip.hex())
+print("CipherText after KEY flip (bin):", bstr(ct_kflip))
 print("Changed bits in ciphertext:", hd_k)
-
-
